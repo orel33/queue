@@ -1,4 +1,4 @@
-CFLAGS= -std=c99 -Wall -fsanitize=address -g
+CFLAGS= -std=c99 -Wall -g -fsanitize=address
 LDFLAGS= -fsanitize=address
 
 ALL: sample test_queue
@@ -13,11 +13,11 @@ test_queue.o: test_queue.c queue.h
 .PHONY: clean test
 
 test: test_queue
-	@ ./test_queue init_free
-	@ ./test_queue push
-	@ ./test_queue pop
-	@ ./test_queue length
-	@ ./test_queue empty
+	./test_queue init_free
+	./test_queue push
+	./test_queue pop
+	./test_queue length
+	./test_queue empty
 
 clean:
 	rm -f *.o sample test_queue
