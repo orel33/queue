@@ -1,5 +1,5 @@
-CFLAGS= -std=c99 -Wall -g
-LDFLAGS=
+CFLAGS= -std=c11 -Wall -Wextra -pedantic -g -fsanitize=address
+LDFLAGS= -fsanitize=address
 
 ALL: sample test_queue
 
