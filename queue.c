@@ -62,7 +62,7 @@ int queue_pop_tail(queue_t* q) {
   free(q->tail);
   q->tail = prev;
   q->length--;
-  if (!q->tail) q->head = NULL;
+  // if (!q->tail) q->head = NULL;
   return v;
 }
 
