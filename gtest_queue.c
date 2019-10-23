@@ -5,7 +5,10 @@
 #include <string.h>
 
 #include "gtest/gtest.h"
-#include "queue.h"
+
+extern "C" {
+  #include "queue.h"
+}
 
 /* ********** TEST INIT & FREE ********** */
 

@@ -1,6 +1,5 @@
-CFLAGS= -std=c++11 -Wall -Wextra -pedantic -g -fsanitize=address -I./googletest/googletest/include
-LDFLAGS= -fsanitize=address -L./googletest/build/lib -lgtest
-CC = g++ # need C++ for Google Test
+CFLAGS= -std=c11 -Wall -Wextra -pedantic -g
+LDFLAGS=
 
 ALL: googletest sample test_queue gtest_queue
 
@@ -8,12 +7,13 @@ ALL: googletest sample test_queue gtest_queue
 sample: sample.o queue.o
 queue.o: queue.c queue.h
 sample.o: sample.c queue.h
-
 test_queue: test_queue.o queue.o
 test_queue.o: test_queue.c queue.h
 
 gtest_queue: gtest_queue.o queue.o
+	g++ -std=c++11 -fsanitize=address -L./googletest/build/lib -lgtest gtest_queue.o queue.o -o gtest_queue
 gtest_queue.o: gtest_queue.c queue.h
+	g++ -std=c++11 -fsanitize=address -I./googletest/googletest/include -g -c gtest_queue.c
 
 .PHONY: clean test gtest
 
