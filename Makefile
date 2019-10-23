@@ -12,8 +12,8 @@ test_queue.o: test_queue.c queue.h
 
 gtest_queue: gtest_queue.o queue.o
 	g++ -std=c++11 -fsanitize=address -L./googletest/build/lib -lgtest gtest_queue.o queue.o -o gtest_queue
-gtest_queue.o: gtest_queue.c queue.h
-	g++ -std=c++11 -fsanitize=address -I./googletest/googletest/include -g -c gtest_queue.c
+gtest_queue.o: gtest_queue.cpp queue.h
+	g++ -std=c++11 -fsanitize=address -I./googletest/googletest/include -g -c gtest_queue.cpp
 
 .PHONY: clean test gtest
 
