@@ -28,7 +28,7 @@ typedef struct element_s element_t;
 /* *********************************************************** */
 
 queue_t* queue_init() {
-  queue_t* q = malloc(sizeof(queue_t));
+  queue_t* q = (queue_t*) malloc(sizeof(queue_t));
   assert(q);
   q->length = 0;
   q->tail = q->head = NULL;
@@ -39,7 +39,7 @@ queue_t* queue_init() {
 
 void queue_push_head(queue_t* q, int v) {
   assert(q);
-  element_t* e = malloc(sizeof(element_t));
+  element_t* e = (element_t*) malloc(sizeof(element_t));
   assert(e);
   e->value = v;
   e->prev = NULL;
