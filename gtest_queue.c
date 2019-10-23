@@ -14,10 +14,7 @@ extern "C" {
 
 bool test_init_free(void) {
   queue_t *q = queue_init();
-  if (q == NULL) {
-    fprintf(stderr, "Error: invalid queue init!\n");
-    return false;
-  }
+  EXPECT_FALSE(NULL == q);
   queue_free(q);
   return true;
 }
@@ -26,27 +23,14 @@ bool test_init_free(void) {
 
 bool test_push(int k) {
   queue_t *q = queue_init();
-  if (q == NULL) {
-    fprintf(stderr, "Error: invalid queue init!\n");
-    return false;
-  }
-
+  EXPECT_FALSE(NULL == q);
   for (int i = 0; i < k; i++) {
     queue_push_head(q, i);
     int head = queue_peek_head(q);
-    if (head != i) {
-      fprintf(stderr, "Error: invalid queue head!\n");
-      queue_free(q);
-      return false;
-    }
+    EXPECT_EQ(head, i);
     int tail = queue_peek_tail(q);
-    if (tail != 0) {
-      fprintf(stderr, "Error: invalid queue tail!\n");
-      queue_free(q);
-      return false;
-    }
+    EXPECT_EQ(tail, 0);
   }
-
   queue_free(q);
   return true;
 }
@@ -55,19 +39,11 @@ bool test_push(int k) {
 
 bool test_pop(int k) {
   queue_t *q = queue_init();
-  if (q == NULL) {
-    fprintf(stderr, "Error: invalid queue init!\n");
-    return false;
-  }
+  EXPECT_FALSE(NULL == q);
   for (int i = 0; i < k; i++) queue_push_head(q, i);
-
   for (int i = 0; i < k; i++) {
     int v = queue_pop_tail(q);
-    if (v != i) {
-      fprintf(stderr, "Error: invalid queue tail!\n");
-      queue_free(q);
-      return false;
-    }
+    EXPECT_EQ(v, i);
   }
   queue_free(q);
   return true;
@@ -77,33 +53,11 @@ bool test_pop(int k) {
 
 bool test_empty(int k) {
   queue_t *q = queue_init();
-  if (q == NULL) {
-    fprintf(stderr, "Error: invalid queue init!\n");
-    return false;
-  }
-
-  if (!queue_is_empty(q)) {
-    fprintf(stderr, "Error: queue not empty!\n");
-    queue_free(q);
-    return false;
-  }
-
+  EXPECT_FALSE(NULL == q);
   for (int i = 0; i < k; i++) queue_push_head(q, i);
-
-  if (queue_is_empty(q)) {
-    fprintf(stderr, "Error: queue empty!\n");
-    queue_free(q);
-    return false;
-  }
-
+  EXPECT_FALSE(queue_is_empty(q));
   for (int i = 0; i < k; i++) queue_pop_tail(q);
-
-  if (!queue_is_empty(q)) {
-    fprintf(stderr, "Error: queue not empty!\n");
-    queue_free(q);
-    return false;
-  }
-
+  EXPECT_TRUE(queue_is_empty(q));
   queue_free(q);
   return true;
 }
@@ -112,33 +66,12 @@ bool test_empty(int k) {
 
 bool test_length(int k) {
   queue_t *q = queue_init();
-  if (q == NULL) {
-    fprintf(stderr, "Error: invalid queue init!\n");
-    return false;
-  }
-
-  if (queue_length(q) != 0) {
-    fprintf(stderr, "Error: invalid queue length!\n");
-    queue_free(q);
-    return false;
-  }
-
+  EXPECT_FALSE(NULL == q);
+  EXPECT_EQ(queue_length(q), 0);
   for (int i = 0; i < k; i++) queue_push_head(q, i);
-
-  if (queue_length(q) != k) {
-    fprintf(stderr, "Error: invalid queue length!\n");
-    queue_free(q);
-    return false;
-  }
-
+  EXPECT_EQ(queue_length(q), k);
   for (int i = 0; i < k; i++) queue_pop_tail(q);
-
-  if (queue_length(q) != 0) {
-    fprintf(stderr, "Error: invalid queue length!\n");
-    queue_free(q);
-    return false;
-  }
-
+  EXPECT_EQ(queue_length(q), 0);
   queue_free(q);
   return true;
 }
