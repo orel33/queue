@@ -13,8 +13,12 @@ extern "C" {
 
 class QueueTest : public ::testing::Test {
  protected:
-  QueueTest() { q = queue_init(); }
-  virtual ~QueueTest() { queue_free(q); }
+  QueueTest() { q = queue_init(); } // should protect also queue_init ...
+  void myfree() { ASSERT_EXIT((queue_free(q),exit(0)), ::testing::ExitedWithCode(0), ".*"); }
+  virtual ~QueueTest() { myfree(); }
+  // same pb with SetUp and TearDown !!!
+  // void SetUp() override { q = queue_init(); }
+  // void TearDown() override { queue_free(q); }
   queue_t *q;
 };
 
