@@ -144,6 +144,7 @@ bool test_length(int k) {
 void usage(int argc, char *argv[]) {
   fprintf(stderr, "Usage: %s <testname> [<...>]\n", argv[0]);
   exit(EXIT_FAILURE);
+  (void)argc;
 }
 
 /* ********** MAIN ROUTINE ********** */
