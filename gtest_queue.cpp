@@ -4,37 +4,27 @@
 #include <stdlib.h>
 #include <string.h>
 
+// #define GTEST_HAS_PTHREAD 0
 #include "gtest/gtest.h"
 
 extern "C" {
-  #include "queue.h"
+#include "queue.h"
 }
 
-class QueueTest : public ::testing::Test
-{
-  protected:
-    QueueTest()
-    {
-      q = queue_init();
-    }
-    virtual ~QueueTest()
-    {
-      queue_free(q);
-    }
-    queue_t *q ;
+class QueueTest : public ::testing::Test {
+ protected:
+  QueueTest() { q = queue_init(); }
+  virtual ~QueueTest() { queue_free(q); }
+  queue_t *q;
 };
 
 /* ********** TEST INIT & FREE ********** */
 
-TEST_F(QueueTest, Init_Free)
-{
-  EXPECT_FALSE(NULL == q);
-}
+TEST_F(QueueTest, Init_Free) { EXPECT_FALSE(NULL == q); }
 
 /* ********** TEST PUSH ********** */
 
-TEST_F(QueueTest, Push)
-{
+TEST_F(QueueTest, Push) {
   for (int i = 0; i < 100; i++) {
     queue_push_head(q, i);
     int head = queue_peek_head(q);
@@ -46,8 +36,7 @@ TEST_F(QueueTest, Push)
 
 /* ********** TEST POP ********** */
 
-TEST_F(QueueTest, Pop)
-{
+TEST_F(QueueTest, Pop) {
   for (int i = 0; i < 100; i++) queue_push_head(q, i);
   for (int i = 0; i < 100; i++) {
     int v = queue_pop_tail(q);
@@ -57,8 +46,7 @@ TEST_F(QueueTest, Pop)
 
 /* ********** TEST EMPTY ********** */
 
-TEST_F(QueueTest, Length)
-{
+TEST_F(QueueTest, Length) {
   EXPECT_EQ(queue_length(q), 0);
   for (int i = 0; i < 10; i++) queue_push_head(q, i);
   EXPECT_EQ(queue_length(q), 10);
@@ -68,8 +56,7 @@ TEST_F(QueueTest, Length)
 
 /* ********** TEST LENGTH ********** */
 
-TEST_F(QueueTest, Empty)
-{
+TEST_F(QueueTest, Empty) {
   for (int i = 0; i < 10; i++) queue_push_head(q, i);
   EXPECT_FALSE(queue_is_empty(q));
   for (int i = 0; i < 10; i++) queue_pop_tail(q);
@@ -78,8 +65,7 @@ TEST_F(QueueTest, Empty)
 
 /* ********** MAIN ROUTINE ********** */
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   /* run google tests */
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
