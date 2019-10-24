@@ -110,3 +110,17 @@ void queue_free(queue_t* q) {
 }
 
 /* *********************************************************** */
+
+void queue_free_full(queue_t* q, gfree_function free_func) {
+  assert(q);
+  element_t* e = q->head;
+  while (e) {
+    element_t* tmp = e;
+    e = e->next;
+    free_func(tmp->value);
+    free(tmp);
+  }
+  free(q);
+}
+
+/* *********************************************************** */

@@ -15,7 +15,7 @@
 
 typedef void* gpointer;
 typedef const void *gconstpointer;
-void (*gfree_function) (gpointer data);
+typedef void (*gfree_function) (gpointer data);
 
 /* *********************************************************** */
 /*                          QUEUE                              */
@@ -31,6 +31,7 @@ bool queue_is_empty(const queue_t* q);
 gpointer queue_peek_head(queue_t* q);
 gpointer queue_peek_tail(queue_t* q);
 void queue_free(queue_t* q);
+void queue_free_full(queue_t* q, gfree_function free_func);
 
 //@}
 
