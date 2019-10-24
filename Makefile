@@ -21,6 +21,7 @@ test: test_queue
 	./test_queue init_free
 	./test_queue push
 	./test_queue pop
+	./test_queue drop
 	./test_queue length
 	./test_queue empty
 

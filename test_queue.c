@@ -9,7 +9,7 @@
 /* ********** TEST INIT & FREE ********** */
 
 bool test_init_free(void) {
-  queue_t *q = queue_init();
+  queue_t *q = queue_init(NULL);
   if (q == NULL) {
     fprintf(stderr, "Error: invalid queue init!\n");
     return false;
@@ -21,7 +21,7 @@ bool test_init_free(void) {
 /* ********** TEST PUSH ********** */
 
 bool test_push(int k) {
-  queue_t *q = queue_init();
+  queue_t *q = queue_init(NULL);
   if (q == NULL) {
     fprintf(stderr, "Error: invalid queue init!\n");
     return false;
@@ -50,7 +50,7 @@ bool test_push(int k) {
 /* ********** TEST POP ********** */
 
 bool test_pop(int k) {
-  queue_t *q = queue_init();
+  queue_t *q = queue_init(NULL);
   if (q == NULL) {
     fprintf(stderr, "Error: invalid queue init!\n");
     return false;
@@ -69,10 +69,29 @@ bool test_pop(int k) {
   return true;
 }
 
+/* ********** TEST DROP ********** */
+
+bool test_drop(int k) {
+  queue_t *q = queue_init(NULL);
+  if (q == NULL) {
+    fprintf(stderr, "Error: invalid queue init!\n");
+    return false;
+  }
+  for (int i = 0; i < k; i++) queue_push_head(q, i);
+  for (int i = 0; i < k; i++) queue_drop_tail(q);
+  if (!queue_is_empty(q)) {
+    fprintf(stderr, "Error: queue not empty!\n");
+    queue_free(q);
+    return false;
+  }
+  queue_free(q);
+  return true;
+}
+
 /* ********** TEST EMPTY ********** */
 
 bool test_empty(int k) {
-  queue_t *q = queue_init();
+  queue_t *q = queue_init(NULL);
   if (q == NULL) {
     fprintf(stderr, "Error: invalid queue init!\n");
     return false;
@@ -107,7 +126,7 @@ bool test_empty(int k) {
 /* ********** TEST LENGTH ********** */
 
 bool test_length(int k) {
-  queue_t *q = queue_init();
+  queue_t *q = queue_init(NULL);
   if (q == NULL) {
     fprintf(stderr, "Error: invalid queue init!\n");
     return false;
@@ -161,6 +180,8 @@ int main(int argc, char *argv[]) {
     ok = test_push(100);
   else if (strcmp("pop", argv[1]) == 0)
     ok = test_pop(100);
+  else if (strcmp("drop", argv[1]) == 0)
+    ok = test_drop(100);
   else if (strcmp("length", argv[1]) == 0)
     ok = test_length(10);
   else if (strcmp("empty", argv[1]) == 0)

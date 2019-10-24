@@ -23,15 +23,15 @@ typedef void (*gfree_function) (gpointer data);
 
 typedef struct queue_s queue_t;
 
-queue_t* queue_init();
+queue_t* queue_init(gfree_function free_func);
 void queue_push_head(queue_t* q, gpointer v);
 gpointer queue_pop_tail(queue_t* q);
+void queue_drop_tail(queue_t* q);
 int queue_length(const queue_t* q);
 bool queue_is_empty(const queue_t* q);
 gpointer queue_peek_head(queue_t* q);
 gpointer queue_peek_tail(queue_t* q);
 void queue_free(queue_t* q);
-void queue_free_full(queue_t* q, gfree_function free_func);
 
 //@}
 

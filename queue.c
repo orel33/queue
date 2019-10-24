@@ -10,6 +10,7 @@ struct queue_s {
   struct element_s* head;
   struct element_s* tail;
   unsigned int length;
+  gfree_function free_func;
 };
 
 /* *********************************************************** */
@@ -27,11 +28,12 @@ typedef struct element_s element_t;
 
 /* *********************************************************** */
 
-queue_t* queue_init() {
+queue_t* queue_init(gfree_function f) {
   queue_t* q = malloc(sizeof(queue_t));
   assert(q);
   q->length = 0;
   q->tail = q->head = NULL;
+  q->free_func = f;
   return q;
 }
 
@@ -64,6 +66,23 @@ gpointer queue_pop_tail(queue_t* q) {
   q->length--;
   if (!q->tail) q->head = NULL;
   return v;
+}
+
+/* *********************************************************** */
+
+void queue_drop_tail(queue_t* q) {
+  assert(q);
+  assert(q->length > 0);
+  assert(q->tail);
+  gpointer v = q->tail->value;
+  element_t* prev = q->tail->prev;
+  if (prev) prev->next = NULL;
+  if (q->free_func != NULL)
+      q->free_func(q->tail->value);
+  free(q->tail);
+  q->tail = prev;
+  q->length--;
+  if (!q->tail) q->head = NULL;
 }
 
 /* *********************************************************** */
@@ -104,20 +123,8 @@ void queue_free(queue_t* q) {
   while (e) {
     element_t* tmp = e;
     e = e->next;
-    free(tmp);
-  }
-  free(q);
-}
-
-/* *********************************************************** */
-
-void queue_free_full(queue_t* q, gfree_function free_func) {
-  assert(q);
-  element_t* e = q->head;
-  while (e) {
-    element_t* tmp = e;
-    e = e->next;
-    free_func(tmp->value);
+    if (q->free_func != NULL)
+      q->free_func(tmp->value);
     free(tmp);
   }
   free(q);

@@ -5,7 +5,7 @@
 #define N 5
 
 int main(void) {
-  queue_t* q = queue_init();
+  queue_t* q = queue_init(NULL);
   printf("queue init\n");
 
   for (int i = 0; i < N; i++) {
