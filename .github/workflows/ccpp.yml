@@ -1,0 +1,20 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches:    
+    - 'gpointer'
+    - 'gtest'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: make
+      run: make
+    - name: simple test
+      run: make test
+    - name: google test
+      run: make gtest
