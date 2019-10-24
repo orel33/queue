@@ -5,20 +5,24 @@
 #include <string.h>
 
 // #define GTEST_HAS_PTHREAD 0
+#define GTEST_BREAK_ON_FAILURE 0
+#define GTEST_CATCH_EXCEPTIONS 1
 #include "gtest/gtest.h"
+#include "gtest/gtest-spi.h"
 
 extern "C" {
 #include "queue.h"
 }
 
+# define EXPECT_CRASH(statement) EXPECT_EXIT((statement,exit(0)),::testing::KilledBySignal(SIGSEGV),".*")
+# define EXPECT_NO_CRASH(statement) EXPECT_EXIT((statement,exit(0)),::testing::ExitedWithCode(0),".*")
+
 class QueueTest : public ::testing::Test {
  protected:
-  QueueTest() { q = queue_init(); } // should protect also queue_init ...
-  void myfree() { ASSERT_EXIT((queue_free(q),exit(0)), ::testing::ExitedWithCode(0), ".*"); }
-  virtual ~QueueTest() { myfree(); }
-  // same pb with SetUp and TearDown !!!
-  // void SetUp() override { q = queue_init(); }
-  // void TearDown() override { queue_free(q); }
+  //QueueTest() { q = queue_init(); }
+  //virtual ~QueueTest() { EXPECT_NO_CRASH(queue_free(q)); }
+  void SetUp() override { q = queue_init(); } // should protect also queue_init ...
+  void TearDown() override { EXPECT_NO_CRASH(queue_free(q)); }
   queue_t *q;
 };
 
@@ -72,5 +76,6 @@ TEST_F(QueueTest, Empty) {
 int main(int argc, char **argv) {
   /* run google tests */
   ::testing::InitGoogleTest(&argc, argv);
+  //::testing::FLAGS_gtest_death_test_style="threadsafe";
   return RUN_ALL_TESTS();
 }
