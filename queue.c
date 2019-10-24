@@ -15,7 +15,7 @@ struct queue_s {
 /* *********************************************************** */
 
 struct element_s {
-  int value;
+  gpointer value;
   struct element_s* next;
   struct element_s* prev;
 };
@@ -37,7 +37,7 @@ queue_t* queue_init() {
 
 /* *********************************************************** */
 
-void queue_push_head(queue_t* q, int v) {
+void queue_push_head(queue_t* q, gpointer v) {
   assert(q);
   element_t* e = malloc(sizeof(element_t));
   assert(e);
@@ -52,11 +52,11 @@ void queue_push_head(queue_t* q, int v) {
 
 /* *********************************************************** */
 
-int queue_pop_tail(queue_t* q) {
+gpointer queue_pop_tail(queue_t* q) {
   assert(q);
   assert(q->length > 0);
   assert(q->tail);
-  int v = q->tail->value;
+  gpointer v = q->tail->value;
   element_t* prev = q->tail->prev;
   if (prev) prev->next = NULL;
   free(q->tail);
@@ -82,7 +82,7 @@ bool queue_is_empty(const queue_t* q) {
 
 /* *********************************************************** */
 
-int queue_peek_head(queue_t* q) {
+gpointer queue_peek_head(queue_t* q) {
   assert(q);
   assert(q->head);
   return q->head->value;
@@ -90,7 +90,7 @@ int queue_peek_head(queue_t* q) {
 
 /* *********************************************************** */
 
-int queue_peek_tail(queue_t* q) {
+gpointer queue_peek_tail(queue_t* q) {
   assert(q);
   assert(q->tail);
   return q->tail->value;
