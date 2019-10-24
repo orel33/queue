@@ -24,5 +24,6 @@
     "gtest-adapter.debugConfig": [
         "(gdb) Launch"
     ],
-    "gtest-adapter.supportLocation": true
+    "gtest-adapter.supportLocation": true,
+    "catch2TestExplorer.executables": "gtest_queue"
 }
