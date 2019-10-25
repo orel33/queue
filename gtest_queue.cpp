@@ -10,11 +10,6 @@ extern "C" {
 #include "queue.h"
 }
 
-#define EXPECT_CRASH( statement )                                                                  \
-    EXPECT_EXIT( ( statement, exit( 0 ) ), ::testing::KilledBySignal( SIGSEGV ), ".*" )
-#define EXPECT_NO_CRASH( statement )                                                               \
-    EXPECT_EXIT( ( statement, exit( 0 ) ), ::testing::ExitedWithCode( 0 ), ".*" )
-
 typedef int mytype_t;
 
 void
@@ -29,7 +24,7 @@ TEST( QueueTest, Init_Free )
 {
     queue_t *q = queue_init( myfree );
     EXPECT_FALSE( NULL == q );
-    EXPECT_NO_CRASH( queue_free( q ) );
+    queue_free( q );
 }
 
 /* ********** TEST PUSH ********** */
@@ -46,7 +41,7 @@ TEST( QueueTest, Push )
         mytype_t *ptr_tail = (mytype_t *)queue_peek_tail( q );
         EXPECT_EQ( *ptr_tail, (mytype_t)0 );
     }
-    EXPECT_NO_CRASH( queue_free( q ) );
+    queue_free( q );
 }
 
 /* ********** TEST POP ********** */
@@ -64,7 +59,7 @@ TEST( QueueTest, Pop )
         EXPECT_EQ( *ptr_out, (mytype_t)i );
         myfree( ptr_out );
     }
-    EXPECT_NO_CRASH( queue_free( q ) );
+    queue_free( q );
 }
 
 /* ********** TEST DROP ********** */
@@ -80,7 +75,7 @@ TEST( QueueTest, Drop )
     for ( int i = 0; i < 100; i++ )
         queue_drop_tail( q );
     EXPECT_EQ( queue_length( q ), 0 );
-    EXPECT_NO_CRASH( queue_free( q ) );
+    queue_free( q );
 }
 
 /* ********** TEST EMPTY ********** */
@@ -98,7 +93,7 @@ TEST( QueueTest, Length )
     for ( int i = 0; i < 10; i++ )
         queue_drop_tail( q );
     EXPECT_EQ( queue_length( q ), 0 );
-    EXPECT_NO_CRASH( queue_free( q ) );
+    queue_free( q );
 }
 
 /* ********** TEST LENGTH ********** */
@@ -115,7 +110,7 @@ TEST( QueueTest, Empty )
     for ( int i = 0; i < 10; i++ )
         queue_drop_tail( q );
     EXPECT_TRUE( queue_is_empty( q ) );
-    EXPECT_NO_CRASH( queue_free( q ) );
+    queue_free( q );
 }
 
 /* ********** MAIN ROUTINE ********** */
