@@ -101,7 +101,7 @@ TEST_F( QueueTest, Length )
     }
     EXPECT_EQ( queue_length( q ), 10 );
     for ( int i = 0; i < 10; i++ )
-        myfree( queue_pop_tail( q ) );
+        queue_drop_tail( q );
     EXPECT_EQ( queue_length( q ), 0 );
 }
 
@@ -116,7 +116,7 @@ TEST_F( QueueTest, Empty )
     }
     EXPECT_FALSE( queue_is_empty( q ) );
     for ( int i = 0; i < 10; i++ )
-        myfree( queue_pop_tail( q ) );
+        queue_drop_tail( q );
     EXPECT_TRUE( queue_is_empty( q ) );
 }
 

@@ -36,6 +36,7 @@ main( void )
     while ( !queue_is_empty( q ) ) {
         mytype_t *ptr_v = (mytype_t *)queue_pop_tail( q );
         printf( "queue pop tail: %d \n", *ptr_v );
+        myfree( ptr_v );
     }
     printf( "queue length: %d \n", queue_length( q ) );
 

@@ -82,6 +82,7 @@ test_pop( int k )
             queue_free( q );
             return false;
         }
+        myfree( ptr_v );
     }
     queue_free( q );
     return true;
