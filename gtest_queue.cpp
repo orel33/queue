@@ -23,31 +23,20 @@ myfree( gpointer p )
     free( p );
 }
 
-class QueueTest : public ::testing::Test
-{
-   protected:
-    void SetUp() override
-    {
-        q = queue_init( myfree );
-    }
-    void TearDown() override
-    {
-        EXPECT_NO_CRASH( queue_free( q ) );
-    }
-    queue_t *q;
-};
-
 /* ********** TEST INIT & FREE ********** */
 
-TEST_F( QueueTest, Init_Free )
+TEST( QueueTest, Init_Free )
 {
+    queue_t *q = queue_init( myfree );
     EXPECT_FALSE( NULL == q );
+    EXPECT_NO_CRASH( queue_free( q ) );
 }
 
 /* ********** TEST PUSH ********** */
 
-TEST_F( QueueTest, Push )
+TEST( QueueTest, Push )
 {
+    queue_t *q = queue_init( myfree );
     for ( int i = 0; i < 100; i++ ) {
         mytype_t *ptr_in = (mytype_t *)malloc( sizeof( mytype_t ) );
         *ptr_in          = i;
@@ -57,12 +46,14 @@ TEST_F( QueueTest, Push )
         mytype_t *ptr_tail = (mytype_t *)queue_peek_tail( q );
         EXPECT_EQ( *ptr_tail, (mytype_t)0 );
     }
+    EXPECT_NO_CRASH( queue_free( q ) );
 }
 
 /* ********** TEST POP ********** */
 
-TEST_F( QueueTest, Pop )
+TEST( QueueTest, Pop )
 {
+    queue_t *q = queue_init( myfree );
     for ( int i = 0; i < 100; i++ ) {
         mytype_t *ptr_in = (mytype_t *)malloc( sizeof( mytype_t ) );
         *ptr_in          = i;
@@ -73,12 +64,14 @@ TEST_F( QueueTest, Pop )
         EXPECT_EQ( *ptr_out, (mytype_t)i );
         myfree( ptr_out );
     }
+    EXPECT_NO_CRASH( queue_free( q ) );
 }
 
 /* ********** TEST DROP ********** */
 
-TEST_F( QueueTest, Drop )
+TEST( QueueTest, Drop )
 {
+    queue_t *q = queue_init( myfree );
     for ( int i = 0; i < 100; i++ ) {
         mytype_t *ptr_in = (mytype_t *)malloc( sizeof( mytype_t ) );
         *ptr_in          = i;
@@ -87,12 +80,14 @@ TEST_F( QueueTest, Drop )
     for ( int i = 0; i < 100; i++ )
         queue_drop_tail( q );
     EXPECT_EQ( queue_length( q ), 0 );
+    EXPECT_NO_CRASH( queue_free( q ) );
 }
 
 /* ********** TEST EMPTY ********** */
 
-TEST_F( QueueTest, Length )
+TEST( QueueTest, Length )
 {
+    queue_t *q = queue_init( myfree );
     EXPECT_EQ( queue_length( q ), 0 );
     for ( int i = 0; i < 10; i++ ) {
         mytype_t *ptr_in = (mytype_t *)malloc( sizeof( mytype_t ) );
@@ -103,12 +98,14 @@ TEST_F( QueueTest, Length )
     for ( int i = 0; i < 10; i++ )
         queue_drop_tail( q );
     EXPECT_EQ( queue_length( q ), 0 );
+    EXPECT_NO_CRASH( queue_free( q ) );
 }
 
 /* ********** TEST LENGTH ********** */
 
-TEST_F( QueueTest, Empty )
+TEST( QueueTest, Empty )
 {
+    queue_t *q = queue_init( myfree );
     for ( int i = 0; i < 10; i++ ) {
         mytype_t *ptr_in = (mytype_t *)malloc( sizeof( mytype_t ) );
         *ptr_in          = i;
@@ -118,6 +115,7 @@ TEST_F( QueueTest, Empty )
     for ( int i = 0; i < 10; i++ )
         queue_drop_tail( q );
     EXPECT_TRUE( queue_is_empty( q ) );
+    EXPECT_NO_CRASH( queue_free( q ) );
 }
 
 /* ********** MAIN ROUTINE ********** */
