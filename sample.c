@@ -6,10 +6,16 @@
 
 typedef int mytype_t;
 
+void
+myfree( gpointer p )
+{
+    free( p );
+}
+
 int
 main( void )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     printf( "queue init\n" );
 
     for ( int i = 0; i < N; i++ ) {

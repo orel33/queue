@@ -28,7 +28,7 @@ class QueueTest : public ::testing::Test
    protected:
     void SetUp() override
     {
-        q = queue_init( myfree );  // queue_init(NULL);
+        q = queue_init( myfree );
     }
     void TearDown() override
     {

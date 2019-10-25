@@ -8,12 +8,18 @@
 
 typedef int mytype_t;
 
+void
+myfree( gpointer p )
+{
+    free( p );
+}
+
 /* ********** TEST INIT & FREE ********** */
 
 bool
 test_init_free( void )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     if ( q == NULL ) {
         fprintf( stderr, "Error: invalid queue init!\n" );
         return false;
@@ -27,7 +33,7 @@ test_init_free( void )
 bool
 test_push( int k )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     if ( q == NULL ) {
         fprintf( stderr, "Error: invalid queue init!\n" );
         return false;
@@ -59,7 +65,7 @@ test_push( int k )
 bool
 test_pop( int k )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     if ( q == NULL ) {
         fprintf( stderr, "Error: invalid queue init!\n" );
         return false;
@@ -86,7 +92,7 @@ test_pop( int k )
 bool
 test_drop( int k )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     if ( q == NULL ) {
         fprintf( stderr, "Error: invalid queue init!\n" );
         return false;
@@ -112,7 +118,7 @@ test_drop( int k )
 bool
 test_empty( int k )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     if ( q == NULL ) {
         fprintf( stderr, "Error: invalid queue init!\n" );
         return false;
@@ -148,7 +154,7 @@ test_empty( int k )
 bool
 test_length( int k )
 {
-    queue_t *q = queue_init( NULL );
+    queue_t *q = queue_init( myfree );
     if ( q == NULL ) {
         fprintf( stderr, "Error: invalid queue init!\n" );
         return false;
