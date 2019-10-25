@@ -1,5 +1,5 @@
-CFLAGS= -std=c11 -Wall -Wextra -pedantic -g
-LDFLAGS=
+CFLAGS= -std=c11 -Wall -Wextra -pedantic -fsanitize=address -g
+LDFLAGS= -fsanitize=address
 
 ALL: googletest sample test_queue gtest_queue
 
@@ -11,9 +11,9 @@ test_queue: test_queue.o queue.o
 test_queue.o: test_queue.c queue.h
 
 gtest_queue: gtest_queue.o queue.o
-	g++ -pthread -std=c++11 gtest_queue.o queue.o -o gtest_queue -L./googletest/build/lib -lgtest
+	g++ -pthread -std=c++11 -fsanitize=address gtest_queue.o queue.o -o gtest_queue -L./googletest/build/lib -lgtest
 gtest_queue.o: gtest_queue.cpp queue.h
-	g++ -pthread -std=c++11 -I./googletest/googletest/include -g -c gtest_queue.cpp
+	g++ -pthread -std=c++11 -fsanitize=address -I./googletest/googletest/include -g -c gtest_queue.cpp
 
 .PHONY: clean test gtest
 
