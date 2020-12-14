@@ -1,4 +1,5 @@
-#include <assert.h>
+#define __USE_GNU
+// #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,12 +7,24 @@
 
 #include "queue.h"
 
+/* ********** ASSERT ********** */
+
+#define ASSERT(expr)                                                                  \
+  do                                                                                  \
+  {                                                                                   \
+    if ((expr) == 0)                                                                  \
+    {                                                                                 \
+      fprintf(stderr, "[%s:%d] Assertion '%s' failed!\n", __FILE__, __LINE__, #expr); \
+      abort();                                                                        \
+    }                                                                                 \
+  } while (0)
+
 /* ********** TEST INIT & FREE ********** */
 
 bool test_init_free(void)
 {
   queue_t *q = queue_init();
-  assert(q);
+  ASSERT(q);
   queue_free(q);
   return true;
 }
@@ -21,15 +34,15 @@ bool test_init_free(void)
 bool test_push_head(int k)
 {
   queue_t *q = queue_init();
-  assert(q);
+  ASSERT(q);
 
   for (int i = 0; i < k; i++)
   {
     queue_push_head(q, i);
     int head = queue_peek_head(q);
-    assert(head == i);
+    ASSERT(head == i);
     int tail = queue_peek_tail(q);
-    assert(tail == 0);
+    ASSERT(tail == 0);
   }
 
   queue_free(q);
@@ -40,6 +53,19 @@ bool test_push_head(int k)
 
 bool test_push_tail(int k)
 {
+  queue_t *q = queue_init();
+  ASSERT(q);
+
+  for (int i = 0; i < k; i++)
+  {
+    queue_push_tail(q, i);
+    int head = queue_peek_tail(q);
+    ASSERT(head == i);
+    int tail = queue_peek_tail(q);
+    ASSERT(tail == 0);
+  }
+
+  queue_free(q);
   return true;
 }
 
@@ -55,14 +81,14 @@ bool test_pop_head(int k)
 bool test_pop_tail(int k)
 {
   queue_t *q = queue_init();
-  assert(q);
+  ASSERT(q);
   for (int i = 0; i < k; i++)
     queue_push_head(q, i);
 
   for (int i = 0; i < k; i++)
   {
     int v = queue_pop_tail(q);
-    assert(v == i);
+    ASSERT(v == i);
   }
   queue_free(q);
   return true;
@@ -73,13 +99,13 @@ bool test_pop_tail(int k)
 bool test_clear(int k)
 {
   queue_t *q = queue_init();
-  assert(q);
+  ASSERT(q);
   for (int i = 0; i < k; i++)
     queue_push_head(q, i);
-  assert(queue_length(q) == k);
+  ASSERT(queue_length(q) == k);
   queue_clear(q);
-  assert(queue_length(q) == 0);
-  assert(queue_is_empty(q));
+  ASSERT(queue_length(q) == 0);
+  ASSERT(queue_is_empty(q));
   queue_free(q);
   return true;
 }
@@ -89,14 +115,14 @@ bool test_clear(int k)
 bool test_empty(int k)
 {
   queue_t *q = queue_init();
-  assert(q);
-  assert(queue_is_empty(q));
+  ASSERT(q);
+  ASSERT(queue_is_empty(q));
   for (int i = 0; i < k; i++)
     queue_push_head(q, i);
-  assert(!queue_is_empty(q));
+  ASSERT(!queue_is_empty(q));
   for (int i = 0; i < k; i++)
     queue_pop_tail(q);
-  assert(queue_is_empty(q));
+  ASSERT(queue_is_empty(q));
   queue_free(q);
   return true;
 }
@@ -106,18 +132,18 @@ bool test_empty(int k)
 bool test_length(int k)
 {
   queue_t *q = queue_init();
-  assert(q);
-  assert(queue_length(q) == 0);
+  ASSERT(q);
+  ASSERT(queue_length(q) == 0);
   for (int i = 0; i < k; i++)
     queue_push_head(q, i);
-  assert(queue_length(q) == k);
+  ASSERT(queue_length(q) == k);
   queue_push_head(q, k);
-  assert(queue_length(q) == (k + 1));
+  ASSERT(queue_length(q) == (k + 1));
   queue_pop_tail(q);
-  assert(queue_length(q) == k);
+  ASSERT(queue_length(q) == k);
   for (int i = 0; i < k; i++)
     queue_pop_tail(q);
-  assert(queue_length(q) == 0);
+  ASSERT(queue_length(q) == 0);
   queue_free(q);
   return true;
 }
