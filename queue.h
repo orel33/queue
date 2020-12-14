@@ -18,7 +18,6 @@ typedef struct queue_s queue_t;
 /** Creates a new queue.*/
 queue_t *queue_init();
 
-
 /** Adds a new element at the head of the queue. */
 void queue_push_head(queue_t *q, void *data);
 
