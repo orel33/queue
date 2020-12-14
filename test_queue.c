@@ -59,10 +59,10 @@ bool test_push_tail(int k)
   for (int i = 0; i < k; i++)
   {
     queue_push_tail(q, i);
-    int head = queue_peek_tail(q);
-    ASSERT(head == i);
     int tail = queue_peek_tail(q);
-    ASSERT(tail == 0);
+    ASSERT(tail == i);
+    int head = queue_peek_head(q);
+    ASSERT(head == 0);
   }
 
   queue_free(q);
@@ -73,6 +73,17 @@ bool test_push_tail(int k)
 
 bool test_pop_head(int k)
 {
+  queue_t *q = queue_init();
+  ASSERT(q);
+  for (int i = 0; i < k; i++)
+    queue_push_head(q, i);
+
+  for (int i = 0; i < k; i++)
+  {
+    int v = queue_pop_tail(q);
+    ASSERT(v == i);
+  }
+  queue_free(q);
   return true;
 }
 
