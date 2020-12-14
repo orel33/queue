@@ -13,20 +13,19 @@
 
 //@{
 
-/* *********************************************************** */
-/*                          QUEUE                              */
-/* *********************************************************** */
-
 typedef struct queue_s queue_t;
 
-queue_t* queue_init();
-void queue_push_head(queue_t* q, int v);
-int queue_pop_tail(queue_t* q);
-int queue_length(const queue_t* q);
-bool queue_is_empty(const queue_t* q);
-int queue_peek_head(queue_t* q);
-int queue_peek_tail(queue_t* q);
-void queue_free(queue_t* q);
+queue_t *queue_init();
+void queue_push_head(queue_t *q, int v);
+void queue_push_tail(queue_t *q, int v);
+int queue_pop_head(queue_t *q);
+int queue_pop_tail(queue_t *q);
+int queue_length(const queue_t *q);
+bool queue_is_empty(const queue_t *q);
+int queue_peek_head(queue_t *q);
+int queue_peek_tail(queue_t *q);
+void queue_clear(queue_t *q);
+void queue_free(queue_t *q);
 
 //@}
 
