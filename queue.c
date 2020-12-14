@@ -17,7 +17,7 @@ struct queue_s
 
 struct element_s
 {
-  int value;
+  void *data;
   struct element_s *next;
   struct element_s *prev;
 };
@@ -40,12 +40,12 @@ queue_t *queue_init()
 
 /* *********************************************************** */
 
-void queue_push_head(queue_t *q, int v)
+void queue_push_head(queue_t *q, void *data)
 {
   assert(q);
   element_t *e = malloc(sizeof(element_t));
   assert(e);
-  e->value = v;
+  e->data = data;
   e->prev = NULL;
   e->next = q->head;
   if (q->head)
@@ -58,12 +58,12 @@ void queue_push_head(queue_t *q, int v)
 
 /* *********************************************************** */
 
-void queue_push_tail(queue_t *q, int v)
+void queue_push_tail(queue_t *q, void *data)
 {
   assert(q);
   element_t *e = malloc(sizeof(element_t));
   assert(e);
-  e->value = v;
+  e->data = data;
   e->prev = q->tail;
   e->next = NULL;
   if (q->tail)
@@ -76,12 +76,12 @@ void queue_push_tail(queue_t *q, int v)
 
 /* *********************************************************** */
 
-int queue_pop_head(queue_t *q)
+void *queue_pop_head(queue_t *q)
 {
   assert(q);
   assert(q->length > 0);
-  assert(q->head);
-  int v = q->head->value;
+  if(!q->head) return NULL;
+  void *data = q->head->data;
   element_t *next = q->head->next;
   if (next)
     next->prev = NULL;
@@ -90,17 +90,17 @@ int queue_pop_head(queue_t *q)
   q->length--;
   if (!q->head)
     q->tail = NULL; // empty list
-  return v;
+  return data;
 }
 
 /* *********************************************************** */
 
-int queue_pop_tail(queue_t *q)
+void *queue_pop_tail(queue_t *q)
 {
   assert(q);
   assert(q->length > 0);
-  assert(q->tail);
-  int v = q->tail->value;
+  if(!q->tail) return NULL;
+  void *data = q->tail->data;
   element_t *prev = q->tail->prev;
   if (prev)
     prev->next = NULL;
@@ -109,7 +109,7 @@ int queue_pop_tail(queue_t *q)
   q->length--;
   if (!q->tail)
     q->head = NULL; // empty list
-  return v;
+  return data;
 }
 
 /* *********************************************************** */
@@ -130,35 +130,20 @@ bool queue_is_empty(const queue_t *q)
 
 /* *********************************************************** */
 
-int queue_peek_head(queue_t *q)
+void *queue_peek_head(queue_t *q)
 {
   assert(q);
   assert(q->head);
-  return q->head->value;
+  return q->head->data;
 }
 
 /* *********************************************************** */
 
-int queue_peek_tail(queue_t *q)
+void *queue_peek_tail(queue_t *q)
 {
   assert(q);
   assert(q->tail);
-  return q->tail->value;
-}
-
-/* *********************************************************** */
-
-void queue_free(queue_t *q)
-{
-  assert(q);
-  element_t *e = q->head;
-  while (e)
-  {
-    element_t *tmp = e;
-    e = e->next;
-    free(tmp);
-  }
-  free(q);
+  return q->tail->data;
 }
 
 /* *********************************************************** */
@@ -175,6 +160,40 @@ void queue_clear(queue_t *q)
   }
   q->head = q->tail = NULL;
   q->length = 0;
+}
+
+/* *********************************************************** */
+
+void queue_clear_full(queue_t *q, void (*destroy)(void *))
+{
+  assert(q);
+  element_t *e = q->head;
+  while (e)
+  {
+    element_t *tmp = e;
+    if (destroy)
+      destroy(e->data);
+    e = e->next;
+    free(tmp);
+  }
+  q->head = q->tail = NULL;
+  q->length = 0;
+}
+
+/* *********************************************************** */
+
+void queue_free(queue_t *q)
+{
+  queue_clear(q);
+  free(q);
+}
+
+/* *********************************************************** */
+
+void queue_free_full(queue_t *q, void (*destroy)(void *))
+{
+  queue_clear_full(q, destroy);
+  free(q);
 }
 
 /* *********************************************************** */

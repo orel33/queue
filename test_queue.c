@@ -1,5 +1,4 @@
 #define __USE_GNU
-// #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,14 +37,17 @@ bool test_push_head(int k)
 
   for (int i = 0; i < k; i++)
   {
-    queue_push_head(q, i);
-    int head = queue_peek_head(q);
-    ASSERT(head == i);
-    int tail = queue_peek_tail(q);
-    ASSERT(tail == 0);
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_head(q, data);
+    int *head = queue_peek_head(q);
+    ASSERT(*head == i);
+    int *tail = queue_peek_tail(q);
+    ASSERT(*tail == 0);
   }
 
-  queue_free(q);
+  queue_free_full(q, free);
   return true;
 }
 
@@ -58,14 +60,17 @@ bool test_push_tail(int k)
 
   for (int i = 0; i < k; i++)
   {
-    queue_push_tail(q, i);
-    int tail = queue_peek_tail(q);
-    ASSERT(tail == i);
-    int head = queue_peek_head(q);
-    ASSERT(head == 0);
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_tail(q, data);
+    int *tail = queue_peek_tail(q);
+    ASSERT(*tail == i);
+    int *head = queue_peek_head(q);
+    ASSERT(*head == 0);
   }
 
-  queue_free(q);
+  queue_free_full(q, free);
   return true;
 }
 
@@ -76,12 +81,18 @@ bool test_pop_head(int k)
   queue_t *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
-    queue_push_tail(q, i);
+  {
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_tail(q, data);
+  }
 
   for (int i = 0; i < k; i++)
   {
-    int v = queue_pop_head(q);
-    ASSERT(v == i);
+    int *data = queue_pop_head(q);
+    ASSERT(*data == i);
+    free(data);
   }
   queue_free(q);
   return true;
@@ -94,12 +105,18 @@ bool test_pop_tail(int k)
   queue_t *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
-    queue_push_head(q, i);
+  {
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_head(q, data);
+  }
 
   for (int i = 0; i < k; i++)
   {
-    int v = queue_pop_tail(q);
-    ASSERT(v == i);
+    int *data = queue_pop_tail(q);
+    ASSERT(*data == i);
+    free(data);
   }
   queue_free(q);
   return true;
@@ -112,9 +129,14 @@ bool test_clear(int k)
   queue_t *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
-    queue_push_head(q, i);
+  {
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_head(q, data);
+  }
   ASSERT(queue_length(q) == k);
-  queue_clear(q);
+  queue_clear_full(q, free);
   ASSERT(queue_length(q) == 0);
   ASSERT(queue_is_empty(q));
   queue_free(q);
@@ -129,10 +151,14 @@ bool test_empty(int k)
   ASSERT(q);
   ASSERT(queue_is_empty(q));
   for (int i = 0; i < k; i++)
-    queue_push_head(q, i);
+  {
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_head(q, data);
+  }
   ASSERT(!queue_is_empty(q));
-  for (int i = 0; i < k; i++)
-    queue_pop_tail(q);
+  queue_clear_full(q, free);
   ASSERT(queue_is_empty(q));
   queue_free(q);
   return true;
@@ -146,14 +172,22 @@ bool test_length(int k)
   ASSERT(q);
   ASSERT(queue_length(q) == 0);
   for (int i = 0; i < k; i++)
-    queue_push_head(q, i);
+  {
+    int *data = (int *)malloc(sizeof(int));
+    ASSERT(data);
+    *data = i;
+    queue_push_head(q, data);
+  }
   ASSERT(queue_length(q) == k);
-  queue_push_head(q, k);
+  int *data = (int *)malloc(sizeof(int));
+  ASSERT(data);
+  *data = k;
+  queue_push_head(q, data);
   ASSERT(queue_length(q) == (k + 1));
-  queue_pop_tail(q);
+  data = queue_pop_tail(q);
   ASSERT(queue_length(q) == k);
-  for (int i = 0; i < k; i++)
-    queue_pop_tail(q);
+  free(data);
+  queue_clear_full(q, free);
   ASSERT(queue_length(q) == 0);
   queue_free(q);
   return true;
