@@ -11,7 +11,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -std=c99 -g")
 add_executable(sample sample.c queue.c)
 add_executable(test_queue test_queue.c queue.c)
 
-add_test(test_queue_init_free ./test_queue init_free)
+add_test(test_queue_new_free ./test_queue init_free)
 add_test(test_queue_push_head ./test_queue push_head)
 add_test(test_queue_pop_head ./test_queue pop_head)
 add_test(test_queue_push_tail ./test_queue push_tail)

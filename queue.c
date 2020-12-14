@@ -29,7 +29,7 @@ typedef struct element_s element_t;
 
 /* *********************************************************** */
 
-queue *queue_init()
+queue *queue_new()
 {
   queue *q = malloc(sizeof(queue));
   assert(q);
