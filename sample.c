@@ -7,7 +7,7 @@
 
 int main(void)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   printf("queue init\n");
 
   for (int i = 0; i < N; i++)

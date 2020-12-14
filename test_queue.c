@@ -22,7 +22,7 @@
 
 bool test_init_free(void)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
   queue_free(q);
   return true;
@@ -32,7 +32,7 @@ bool test_init_free(void)
 
 bool test_push_head(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
 
   for (int i = 0; i < k; i++)
@@ -55,7 +55,7 @@ bool test_push_head(int k)
 
 bool test_push_tail(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
 
   for (int i = 0; i < k; i++)
@@ -78,7 +78,7 @@ bool test_push_tail(int k)
 
 bool test_pop_head(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
   {
@@ -102,7 +102,7 @@ bool test_pop_head(int k)
 
 bool test_pop_tail(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
   {
@@ -126,7 +126,7 @@ bool test_pop_tail(int k)
 
 bool test_clear(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
   {
@@ -147,7 +147,7 @@ bool test_clear(int k)
 
 bool test_empty(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
   ASSERT(queue_is_empty(q));
   for (int i = 0; i < k; i++)
@@ -168,7 +168,7 @@ bool test_empty(int k)
 
 bool test_length(int k)
 {
-  queue_t *q = queue_init();
+  queue *q = queue_init();
   ASSERT(q);
   ASSERT(queue_length(q) == 0);
   for (int i = 0; i < k; i++)

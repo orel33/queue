@@ -24,14 +24,14 @@ struct element_s
 
 /* *********************************************************** */
 
-typedef struct queue_s queue_t;
+typedef struct queue_s queue;
 typedef struct element_s element_t;
 
 /* *********************************************************** */
 
-queue_t *queue_init()
+queue *queue_init()
 {
-  queue_t *q = malloc(sizeof(queue_t));
+  queue *q = malloc(sizeof(queue));
   assert(q);
   q->length = 0;
   q->tail = q->head = NULL;
@@ -40,7 +40,7 @@ queue_t *queue_init()
 
 /* *********************************************************** */
 
-void queue_push_head(queue_t *q, void *data)
+void queue_push_head(queue *q, void *data)
 {
   assert(q);
   element_t *e = malloc(sizeof(element_t));
@@ -58,7 +58,7 @@ void queue_push_head(queue_t *q, void *data)
 
 /* *********************************************************** */
 
-void queue_push_tail(queue_t *q, void *data)
+void queue_push_tail(queue *q, void *data)
 {
   assert(q);
   element_t *e = malloc(sizeof(element_t));
@@ -76,7 +76,7 @@ void queue_push_tail(queue_t *q, void *data)
 
 /* *********************************************************** */
 
-void *queue_pop_head(queue_t *q)
+void *queue_pop_head(queue *q)
 {
   assert(q);
   assert(q->length > 0);
@@ -95,7 +95,7 @@ void *queue_pop_head(queue_t *q)
 
 /* *********************************************************** */
 
-void *queue_pop_tail(queue_t *q)
+void *queue_pop_tail(queue *q)
 {
   assert(q);
   assert(q->length > 0);
@@ -114,7 +114,7 @@ void *queue_pop_tail(queue_t *q)
 
 /* *********************************************************** */
 
-int queue_length(const queue_t *q)
+int queue_length(const queue *q)
 {
   assert(q);
   return q->length;
@@ -122,7 +122,7 @@ int queue_length(const queue_t *q)
 
 /* *********************************************************** */
 
-bool queue_is_empty(const queue_t *q)
+bool queue_is_empty(const queue *q)
 {
   assert(q);
   return (q->length == 0);
@@ -130,7 +130,7 @@ bool queue_is_empty(const queue_t *q)
 
 /* *********************************************************** */
 
-void *queue_peek_head(queue_t *q)
+void *queue_peek_head(queue *q)
 {
   assert(q);
   assert(q->head);
@@ -139,7 +139,7 @@ void *queue_peek_head(queue_t *q)
 
 /* *********************************************************** */
 
-void *queue_peek_tail(queue_t *q)
+void *queue_peek_tail(queue *q)
 {
   assert(q);
   assert(q->tail);
@@ -148,7 +148,7 @@ void *queue_peek_tail(queue_t *q)
 
 /* *********************************************************** */
 
-void queue_clear(queue_t *q)
+void queue_clear(queue *q)
 {
   assert(q);
   element_t *e = q->head;
@@ -164,7 +164,7 @@ void queue_clear(queue_t *q)
 
 /* *********************************************************** */
 
-void queue_clear_full(queue_t *q, void (*destroy)(void *))
+void queue_clear_full(queue *q, void (*destroy)(void *))
 {
   assert(q);
   element_t *e = q->head;
@@ -182,7 +182,7 @@ void queue_clear_full(queue_t *q, void (*destroy)(void *))
 
 /* *********************************************************** */
 
-void queue_free(queue_t *q)
+void queue_free(queue *q)
 {
   queue_clear(q);
   free(q);
@@ -190,7 +190,7 @@ void queue_free(queue_t *q)
 
 /* *********************************************************** */
 
-void queue_free_full(queue_t *q, void (*destroy)(void *))
+void queue_free_full(queue *q, void (*destroy)(void *))
 {
   queue_clear_full(q, destroy);
   free(q);
