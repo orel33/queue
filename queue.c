@@ -174,7 +174,7 @@ void queue_clear(queue_t *q)
     free(tmp);
   }
   q->head = q->tail = NULL;
-  assert(q->length == 0);
+  q->length = 0;
 }
 
 /* *********************************************************** */
