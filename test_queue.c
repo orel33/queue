@@ -76,11 +76,11 @@ bool test_pop_head(int k)
   queue_t *q = queue_init();
   ASSERT(q);
   for (int i = 0; i < k; i++)
-    queue_push_head(q, i);
+    queue_push_tail(q, i);
 
   for (int i = 0; i < k; i++)
   {
-    int v = queue_pop_tail(q);
+    int v = queue_pop_head(q);
     ASSERT(v == i);
   }
   queue_free(q);
