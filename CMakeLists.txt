@@ -1,15 +1,17 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.0)
 
 project("queue" C)
 
 include(CTest)
 enable_testing()
 
-set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -std=c99 -g")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall")
 
-add_executable(sample sample.c queue.c)
-add_executable(test_queue test_queue.c queue.c)
+add_library(queue queue.c)
+add_executable(sample sample.c)
+target_link_libraries(sample queue)
+add_executable(test_queue test_queue.c)
+target_link_libraries(test_queue queue)
 
 add_test(test_queue_new_free ./test_queue init_free)
 add_test(test_queue_push_head ./test_queue push_head)
