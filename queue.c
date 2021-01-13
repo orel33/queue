@@ -105,7 +105,7 @@ void *queue_pop_tail(queue *q)
   element_t *prev = q->tail->prev;
   if (prev)
     prev->next = NULL;
-  free(q->tail);
+  // free(q->tail);
   q->tail = prev;
   q->length--;
   if (!q->tail)
