@@ -80,7 +80,8 @@ void *queue_pop_head(queue *q)
 {
   assert(q);
   assert(q->length > 0);
-  if(!q->head) return NULL;
+  if (!q->head)
+    return NULL;
   void *data = q->head->data;
   element_t *next = q->head->next;
   if (next)
@@ -99,7 +100,8 @@ void *queue_pop_tail(queue *q)
 {
   assert(q);
   assert(q->length > 0);
-  if(!q->tail) return NULL;
+  if (!q->tail)
+    return NULL;
   void *data = q->tail->data;
   element_t *prev = q->tail->prev;
   if (prev)
