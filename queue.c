@@ -108,8 +108,8 @@ void *queue_pop_tail(queue *q)
   free(q->tail);
   q->tail = prev;
   q->length--;
-  if (!q->tail)
-    q->head = NULL; // empty list
+  // if (!q->tail)
+  //  q->head = NULL; // empty list
   return data;
 }
 
