@@ -5,7 +5,7 @@ project(queue C)
 include(CTest)
 enable_testing()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -Wall --coverage")
 
 add_library(queue queue.c)
 add_executable(sample sample.c)
