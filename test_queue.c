@@ -6,24 +6,12 @@
 
 #include "queue.h"
 
-/* ********** ASSERT ********** */
-
-#define ASSERT(expr)                                                                  \
-  do                                                                                  \
-  {                                                                                   \
-    if ((expr) == 0)                                                                  \
-    {                                                                                 \
-      fprintf(stderr, "[%s:%d] Assertion '%s' failed!\n", __FILE__, __LINE__, #expr); \
-      abort();                                                                        \
-    }                                                                                 \
-  } while (0)
-
 /* ********** TEST INIT & FREE ********** */
 
 bool test_new_free(void)
 {
   queue *q = queue_new();
-  ASSERT(q);
+  if (!q) return false;
   queue_free(q);
   return true;
 }
@@ -33,18 +21,18 @@ bool test_new_free(void)
 bool test_push_head(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
+  if (!q) return false;
 
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_head(q, data);
     int *head = queue_peek_head(q);
-    ASSERT(*head == i);
+    if(*head != i) return false;
     int *tail = queue_peek_tail(q);
-    ASSERT(*tail == 0);
+    if(*tail != 0) return false;
   }
 
   queue_free_full(q, free);
@@ -56,18 +44,18 @@ bool test_push_head(int k)
 bool test_push_tail(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
+  if (!q) return false;
 
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_tail(q, data);
     int *tail = queue_peek_tail(q);
-    ASSERT(*tail == i);
+    if(*tail != i) return false;
     int *head = queue_peek_head(q);
-    ASSERT(*head == 0);
+    if(*head != 0) return false;
   }
 
   queue_free_full(q, free);
@@ -79,11 +67,11 @@ bool test_push_tail(int k)
 bool test_pop_head(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
+  if(!q) return false;
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_tail(q, data);
   }
@@ -91,7 +79,7 @@ bool test_pop_head(int k)
   for (int i = 0; i < k; i++)
   {
     int *data = queue_pop_head(q);
-    ASSERT(*data == i);
+    if(*data != i) return false;
     free(data);
   }
   queue_free(q);
@@ -103,11 +91,12 @@ bool test_pop_head(int k)
 bool test_pop_tail(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
+  if (!q) return false;
+
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_head(q, data);
   }
@@ -115,7 +104,7 @@ bool test_pop_tail(int k)
   for (int i = 0; i < k; i++)
   {
     int *data = queue_pop_tail(q);
-    ASSERT(*data == i);
+    if(*data != i) return false;
     free(data);
   }
   queue_free(q);
@@ -127,18 +116,19 @@ bool test_pop_tail(int k)
 bool test_clear(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
+  if (!q) return false;
+
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_head(q, data);
   }
-  ASSERT(queue_length(q) == k);
+  if(queue_length(q) != k) return false;
   queue_clear_full(q, free);
-  ASSERT(queue_length(q) == 0);
-  ASSERT(queue_is_empty(q));
+  if(queue_length(q) != 0) return false;
+  if(!queue_is_empty(q)) return false;
   queue_free(q);
   return true;
 }
@@ -148,18 +138,19 @@ bool test_clear(int k)
 bool test_empty(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
-  ASSERT(queue_is_empty(q));
+  if (!q) return false;
+  if(!queue_is_empty(q)) return false;
+
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_head(q, data);
   }
-  ASSERT(!queue_is_empty(q));
+  if(queue_is_empty(q)) return false;
   queue_clear_full(q, free);
-  ASSERT(queue_is_empty(q));
+  if(!queue_is_empty(q)) return false;
   queue_free(q);
   return true;
 }
@@ -169,26 +160,27 @@ bool test_empty(int k)
 bool test_length(int k)
 {
   queue *q = queue_new();
-  ASSERT(q);
-  ASSERT(queue_length(q) == 0);
+  if (!q) return false;
+  if(queue_length(q) != 0) return false;
+
   for (int i = 0; i < k; i++)
   {
     int *data = (int *)malloc(sizeof(int));
-    ASSERT(data);
+    if(!data) return false;
     *data = i;
     queue_push_head(q, data);
   }
-  ASSERT(queue_length(q) == k);
+  if(queue_length(q) != k) return false;
   int *data = (int *)malloc(sizeof(int));
-  ASSERT(data);
+  if(!data) return false;
   *data = k;
   queue_push_head(q, data);
-  ASSERT(queue_length(q) == (k + 1));
+  if(queue_length(q) != (k + 1)) return false;
   data = queue_pop_tail(q);
-  ASSERT(queue_length(q) == k);
+  if(queue_length(q) != k) return false;
   free(data);
   queue_clear_full(q, free);
-  ASSERT(queue_length(q) == 0);
+  if(queue_length(q) != 0) return false;
   queue_free(q);
   return true;
 }
