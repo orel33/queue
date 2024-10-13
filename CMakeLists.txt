@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
-project("queue" C)
+project(queue C)
 
 include(CTest)
 enable_testing()
