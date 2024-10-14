@@ -203,7 +203,7 @@ int main(int argc, char *argv[])
   // start test
   fprintf(stderr, "=> Start test \"%s\"\n", argv[1]);
   bool ok = false;
-  if (strcmp("init_free", argv[1]) == 0)
+  if (strcmp("new_free", argv[1]) == 0)
     ok = test_new_free();
   else if (strcmp("push_head", argv[1]) == 0)
     ok = test_push_head(100);

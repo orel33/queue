@@ -13,7 +13,7 @@ target_link_libraries(sample queue)
 add_executable(test_queue test_queue.c)
 target_link_libraries(test_queue queue)
 
-add_test(test_queue_new_free ./test_queue init_free)
+add_test(test_queue_new_free ./test_queue new_free)
 add_test(test_queue_push_head ./test_queue push_head)
 add_test(test_queue_pop_head ./test_queue pop_head)
 add_test(test_queue_push_tail ./test_queue push_tail)
